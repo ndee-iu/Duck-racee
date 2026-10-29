@@ -6,61 +6,201 @@
     <title>Đại Chiến Vịt Thám Tử - Duck Race AI</title>
     <style>
         :root {
-            --bg: #f0f8ff;
-            --card: #ffffff;
-            --primary: #2c3e50;
-            --accent: #e74c3c;
+            --bg-gradient: linear-gradient(135deg, #a8edd9 0%, #fed6e3 100%);
+            --card-bg: #ffffff;
+            --primary: #4a4e69;
+            --accent-pink: #ff758f;
+            --accent-purple: #7209b7;
+            --accent-blue: #4cc9f0;
+            --yellow-light: #fff3bf;
+            --green-light: #d3f9d8;
         }
 
         body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background-color: var(--bg);
-            color: #333;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-gradient);
+            color: #2b2d42;
             margin: 0;
-            padding: 15px;
+            padding: 20px 10px;
+            min-height: 100vh;
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 950px;
             margin: 0 auto;
-            background: var(--card);
-            border-radius: 16px;
-            padding: 20px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
         }
 
         .header {
             text-align: center;
-            border-bottom: 2px dashed #3498db;
-            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            margin: 0;
+            color: var(--accent-purple);
+            font-size: 26px;
+            letter-spacing: 0.5px;
+        }
+
+        .header p {
+            margin: 5px 0 0 0;
+            color: #6c757d;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* 1. KHUNG BÀI TẬP (ĐƯỢC ƯU TIÊN LÊN ĐẦU, TO RÕ) */
+        .quiz-box {
+            border: 2px solid #e9ecef;
+            border-radius: 16px;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-weight: bold;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            color: white;
+        }
+
+        .sentence {
+            background: var(--yellow-light);
+            border-left: 5px solid #fcc419;
+            padding: 12px 15px;
+            font-size: 17px;
+            font-weight: 600;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .ai-box {
+            background: #e7f5ff;
+            border-left: 5px solid var(--accent-blue);
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        .input-box {
             margin-bottom: 15px;
         }
 
-        .header h1 { margin: 0; color: #2980b9; font-size: 26px; }
+        .input-box label {
+            font-weight: bold;
+            font-size: 14px;
+            color: var(--primary);
+            display: block;
+            margin-bottom: 6px;
+        }
 
-        /* ĐƯỜNG ĐUA VỊT */
+        textarea {
+            width: 100%;
+            height: 65px;
+            border: 2px solid #ced4da;
+            border-radius: 10px;
+            padding: 10px;
+            box-sizing: border-box;
+            font-family: inherit;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--accent-purple);
+        }
+
+        .solution-box {
+            display: none;
+            background: var(--green-light);
+            border-left: 5px solid #40c057;
+            padding: 12px 15px;
+            border-radius: 8px;
+            font-size: 15px;
+            margin-top: 15px;
+            line-height: 1.5;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .nav-btns {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn-main {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+            transition: transform 0.1s, background 0.2s;
+        }
+
+        .btn-main:hover {
+            transform: translateY(-2px);
+            opacity: 0.95;
+        }
+
+        .btn-reveal {
+            background: var(--accent-pink);
+        }
+
+        /* 2. ĐƯỜNG ĐUA VỊT (XẾP PHÍA SAU, GỌN GÀNG) */
+        .race-section-title {
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--accent-purple);
+            margin-bottom: 12px;
+        }
+
         .race-track {
-            background: #e0f7fa;
-            border: 2px solid #00acc1;
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 20px;
+            background: #eef9ff;
+            border: 2px dashed #74c0fc;
+            border-radius: 14px;
+            padding: 12px;
+            margin-bottom: 15px;
         }
 
         .lane {
             display: flex;
             align-items: center;
             position: relative;
-            height: 45px;
-            background: #b2ebf2;
-            margin-bottom: 8px;
-            border-radius: 25px;
+            height: 38px;
+            background: #d0ebff;
+            margin-bottom: 6px;
+            border-radius: 20px;
             padding: 0 10px;
             overflow: hidden;
         }
 
         .duck {
-            font-size: 28px;
+            font-size: 22px;
             position: absolute;
             left: 10px;
             transition: left 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -69,119 +209,66 @@
 
         .finish-line {
             position: absolute;
-            right: 15px;
+            right: 12px;
             font-weight: bold;
-            color: #d32f2f;
-            border-left: 3px dashed #d32f2f;
-            padding-left: 5px;
-            font-size: 12px;
+            color: #e03131;
+            border-left: 2px dashed #e03131;
+            padding-left: 4px;
+            font-size: 11px;
         }
 
         .lane-label {
             font-weight: bold;
-            width: 80px;
+            width: 75px;
             z-index: 3;
-            font-size: 13px;
+            font-size: 12px;
         }
 
-        /* BẢNG ĐIỀU KHIỂN VỊT & PHÉP */
+        /* 3. ĐIỀU KHIỂN ĐỘI (NÚT BƠI NHỎ GỌN) */
         .team-controls {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin-bottom: 20px;
+            gap: 8px;
         }
 
         .team-card {
-            background: #f9f9f9;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            padding: 8px;
+            background: #f8f9fa;
+            border: 1.5px solid #e9ecef;
+            border-radius: 10px;
+            padding: 8px 4px;
             text-align: center;
         }
 
-        .btn-swim {
-            background: #2ecc71;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
+        .team-name {
+            font-size: 12px;
             font-weight: bold;
+            margin-bottom: 4px;
+            display: block;
         }
 
+        .btn-swim {
+            background: #40c057;
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 11px;
+            transition: background 0.2s;
+        }
+
+        .btn-swim:hover { background: #37b24d; }
+
         .btn-spell {
-            background: #f39c12;
+            background: #fab005;
             color: white;
             border: none;
             padding: 3px 6px;
-            border-radius: 4px;
-            font-size: 11px;
+            border-radius: 5px;
+            font-size: 10px;
             cursor: pointer;
-            margin-top: 4px;
-        }
-
-        /* KHUNG BÀI TẬP & NHẬP ĐÁP ÁN */
-        .quiz-box {
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            padding: 15px;
-            background: #fff;
-        }
-
-        .sentence {
-            background: #fffde7;
-            border-left: 4px solid #fbc02d;
-            padding: 10px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .ai-box {
-            background: #eef5fc;
-            border-left: 4px solid #03a9f4;
-            padding: 10px;
-            margin-bottom: 10px;
-            font-size: 14px;
-        }
-
-        .input-box {
-            margin-bottom: 10px;
-        }
-
-        textarea {
-            width: 100%;
-            height: 50px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            padding: 8px;
-            box-sizing: border-box;
-            font-family: inherit;
-        }
-
-        .solution-box {
-            display: none;
-            background: #e8f5e9;
-            border-left: 4px solid #4caf50;
-            padding: 10px;
-            font-size: 14px;
-            margin-top: 10px;
-        }
-
-        .nav-btns {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-        }
-
-        .btn-main {
-            background: #2c3e50;
-            color: white;
-            border: none;
-            padding: 8px 15px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
+            margin-top: 3px;
         }
     </style>
 </head>
@@ -189,77 +276,81 @@
 
 <div class="container">
     <div class="header">
-        <h1>🦆 ĐẠI CHIẾN VỊT THÁM TỬ (DUCK RACE)</h1>
-        <p>Soi Lỗi AI & Đưa Vịt Về Đích!</p>
+        <h1>🕵️ ĐẠI CHIẾN VỊT THÁM TỬ (DUCK RACE)</h1>
+        <p>Thực hành Tiếng Việt: Lỗi logic, lỗi câu mơ hồ & cách sửa</p>
     </div>
 
-    <!-- ĐƯỜNG ĐUA VỊT -->
-    <div class="race-track">
-        <div class="lane">
-            <span class="lane-label">🟡 Đội 1</span>
-            <div class="duck" id="duck-1">🦆</div>
-            <div class="finish-line">🏁 ĐÍCH</div>
-        </div>
-        <div class="lane">
-            <span class="lane-label">🔵 Đội 2</span>
-            <div class="duck" id="duck-2">🦆</div>
-            <div class="finish-line">🏁 ĐÍCH</div>
-        </div>
-        <div class="lane">
-            <span class="lane-label">🔴 Đội 3</span>
-            <div class="duck" id="duck-3">🦆</div>
-            <div class="finish-line">🏁 ĐÍCH</div>
-        </div>
-        <div class="lane">
-            <span class="lane-label">🟢 Đội 4</span>
-            <div class="duck" id="duck-4">🦆</div>
-            <div class="finish-line">🏁 ĐÍCH</div>
-        </div>
-    </div>
-
-    <!-- ĐIỀU KHIỂN VỊT BƠI & THẺ PHÉP -->
-    <div class="team-controls">
-        <div class="team-card">
-            <b>🟡 Vịt Vàng</b><br>
-            <button class="btn-swim" onclick="moveDuck(1, 15)">Bơi +15m 🌊</button><br>
-            <button class="btn-spell" onclick="useSpell(1)">⚡ Thẻ x2 Bơi</button>
-        </div>
-        <div class="team-card">
-            <b>🔵 Vịt Xanh</b><br>
-            <button class="btn-swim" onclick="moveDuck(2, 15)">Bơi +15m 🌊</button><br>
-            <button class="btn-spell" onclick="useSpell(2)">⚡ Thẻ x2 Bơi</button>
-        </div>
-        <div class="team-card">
-            <b>🔴 Vịt Đỏ</b><br>
-            <button class="btn-swim" onclick="moveDuck(3, 15)">Bơi +15m 🌊</button><br>
-            <button class="btn-spell" onclick="useSpell(3)">⚡ Thẻ x2 Bơi</button>
-        </div>
-        <div class="team-card">
-            <b>🟢 Vịt Lá</b><br>
-            <button class="btn-swim" onclick="moveDuck(4, 15)">Bơi +15m 🌊</button><br>
-            <button class="btn-spell" onclick="useSpell(4)">⚡ Thẻ x2 Bơi</button>
-        </div>
-    </div>
-
-    <!-- KHUNG CÂU HỎI & NHẬP ĐÁP ÁN -->
+    <!-- 1. KHUNG PHÂN TÍCH CÂU HỎI (ƯU TIÊN HÀNG ĐẦU) -->
     <div class="quiz-box">
+        <span class="section-title" style="background: #fcc419;">📌 CÂU GỐC CẦN PHÂN TÍCH</span>
         <div class="sentence" id="q-sentence">Đang tải câu hỏi...</div>
+
+        <span class="section-title" style="background: var(--accent-blue);">🤖 PHÂN TÍCH CỦA AI (CÓ BẪY)</span>
         <div class="ai-box" id="q-ai">Đang tải phân tích AI...</div>
 
         <div class="input-box">
-            <label>✍️ <b>Đáp án của Thám Tử (Gõ ý kiến của đội vào đây):</b></label>
+            <label>✍️ Đáp án của Thám tử (Gõ ý kiến của nhóm vào đây):</label>
             <textarea id="user-input" placeholder="Nhập điểm AI làm sai hoặc câu sửa của đội em tại đây..."></textarea>
         </div>
 
         <div class="solution-box" id="sol-box">
-            <b>💡 ĐÁP ÁN PHÁN QUYẾT:</b>
+            <span class="section-title" style="background: #40c057; margin-bottom: 5px;">💡 ĐÁP ÁN PHÁN QUYẾT</span>
             <div id="q-sol">...</div>
         </div>
 
         <div class="nav-btns">
             <button class="btn-main" onclick="prevQ()">⬅️ Câu trước</button>
-            <button class="btn-main" style="background:#e74c3c" onclick="toggleSol()">🔍 Mở Đáp Án / Soi AI</button>
+            <button class="btn-main btn-reveal" onclick="toggleSol()">🔍 Mở Đáp Án / Soi AI</button>
             <button class="btn-main" onclick="nextQ()">Câu tiếp ➡️</button>
+        </div>
+    </div>
+
+    <!-- 2. ĐƯỜNG ĐUA VỊT (GỌN GÀNG PHÍA SAU) -->
+    <div class="race-section-title">🏁 BẢNG XẾP HẠNG ĐUA VỊT 🏁</div>
+    <div class="race-track">
+        <div class="lane">
+            <span class="lane-label">🟡 Đội 1</span>
+            <div class="duck" id="duck-1">🦆</div>
+            <div class="finish-line">ĐÍCH</div>
+        </div>
+        <div class="lane">
+            <span class="lane-label">🔵 Đội 2</span>
+            <div class="duck" id="duck-2">🦆</div>
+            <div class="finish-line">ĐÍCH</div>
+        </div>
+        <div class="lane">
+            <span class="lane-label">🔴 Đội 3</span>
+            <div class="duck" id="duck-3">🦆</div>
+            <div class="finish-line">ĐÍCH</div>
+        </div>
+        <div class="lane">
+            <span class="lane-label">🟢 Đội 4</span>
+            <div class="duck" id="duck-4">🦆</div>
+            <div class="finish-line">ĐÍCH</div>
+        </div>
+    </div>
+
+    <!-- 3. ĐIỀU KHIỂN THƯỞNG BƠI (NHỎ GỌN) -->
+    <div class="team-controls">
+        <div class="team-card">
+            <span class="team-name">🟡 Vịt Vàng</span>
+            <button class="btn-swim" onclick="moveDuck(1, 15)">+15m 🌊</button><br>
+            <button class="btn-spell" onclick="useSpell(1)">⚡ x2 Bơi</button>
+        </div>
+        <div class="team-card">
+            <span class="team-name">🔵 Vịt Xanh</span>
+            <button class="btn-swim" onclick="moveDuck(2, 15)">+15m 🌊</button><br>
+            <button class="btn-spell" onclick="useSpell(2)">⚡ x2 Bơi</button>
+        </div>
+        <div class="team-card">
+            <span class="team-name">🔴 Vịt Đỏ</span>
+            <button class="btn-swim" onclick="moveDuck(3, 15)">+15m 🌊</button><br>
+            <button class="btn-spell" onclick="useSpell(3)">⚡ x2 Bơi</button>
+        </div>
+        <div class="team-card">
+            <span class="team-name">🟢 Vịt Lá</span>
+            <button class="btn-swim" onclick="moveDuck(4, 15)">+15m 🌊</button><br>
+            <button class="btn-spell" onclick="useSpell(4)">⚡ x2 Bơi</button>
         </div>
     </div>
 </div>
@@ -289,7 +380,7 @@
     ];
 
     let currentIdx = 0;
-    let duckPositions = [10, 10, 10, 10]; // Vị trí xuất phát %
+    let duckPositions = [10, 10, 10, 10];
 
     function loadQ(idx) {
         document.getElementById('q-sentence').innerHTML = questions[idx].sentence;
@@ -301,7 +392,7 @@
 
     function moveDuck(team, step) {
         duckPositions[team - 1] += step;
-        if (duckPositions[team - 1] > 82) duckPositions[team - 1] = 82; // Giới hạn vạch đích
+        if (duckPositions[team - 1] > 82) duckPositions[team - 1] = 82;
         document.getElementById(`duck-${team}`).style.left = duckPositions[team - 1] + '%';
         
         if(duckPositions[team - 1] >= 82) {
