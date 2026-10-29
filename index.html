@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đại Chiến Vịt Thám Tử - Duck Race AI</title>
+    <style>
+        :root {
+            --bg: #f0f8ff;
+            --card: #ffffff;
+            --primary: #2c3e50;
+            --accent: #e74c3c;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: var(--bg);
+            color: #333;
+            margin: 0;
+            padding: 15px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: var(--card);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 2px dashed #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .header h1 { margin: 0; color: #2980b9; font-size: 26px; }
+
+        /* ĐƯỜNG ĐUA VỊT */
+        .race-track {
+            background: #e0f7fa;
+            border: 2px solid #00acc1;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .lane {
+            display: flex;
+            align-items: center;
+            position: relative;
+            height: 45px;
+            background: #b2ebf2;
+            margin-bottom: 8px;
+            border-radius: 25px;
+            padding: 0 10px;
+            overflow: hidden;
+        }
+
+        .duck {
+            font-size: 28px;
+            position: absolute;
+            left: 10px;
+            transition: left 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 2;
+        }
+
+        .finish-line {
+            position: absolute;
+            right: 15px;
+            font-weight: bold;
+            color: #d32f2f;
+            border-left: 3px dashed #d32f2f;
+            padding-left: 5px;
+            font-size: 12px;
+        }
+
+        .lane-label {
+            font-weight: bold;
+            width: 80px;
+            z-index: 3;
+            font-size: 13px;
+        }
+
+        /* BẢNG ĐIỀU KHIỂN VỊT & PHÉP */
+        .team-controls {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .team-card {
+            background: #f9f9f9;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 8px;
+            text-align: center;
+        }
+
+        .btn-swim {
+            background: #2ecc71;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-spell {
+            background: #f39c12;
+            color: white;
+            border: none;
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-size: 11px;
+            cursor: pointer;
+            margin-top: 4px;
+        }
+
+        /* KHUNG BÀI TẬP & NHẬP ĐÁP ÁN */
+        .quiz-box {
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 15px;
+            background: #fff;
+        }
+
+        .sentence {
+            background: #fffde7;
+            border-left: 4px solid #fbc02d;
+            padding: 10px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .ai-box {
+            background: #eef5fc;
+            border-left: 4px solid #03a9f4;
+            padding: 10px;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .input-box {
+            margin-bottom: 10px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 50px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            padding: 8px;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+
+        .solution-box {
+            display: none;
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 10px;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+
+        .nav-btns {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .btn-main {
+            background: #2c3e50;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>🦆 ĐẠI CHIẾN VỊT THÁM TỬ (DUCK RACE)</h1>
+        <p>Soi Lỗi AI & Đưa Vịt Về Đích!</p>
+    </div>
+
+    <!-- ĐƯỜNG ĐUA VỊT -->
+    <div class="race-track">
+        <div class="lane">
+            <span class="lane-label">🟡 Đội 1</span>
+            <div class="duck" id="duck-1">🦆</div>
+            <div class="finish-line">🏁 ĐÍCH</div>
+        </div>
+        <div class="lane">
+            <span class="lane-label">🔵 Đội 2</span>
+            <div class="duck" id="duck-2">🦆</div>
+            <div class="finish-line">🏁 ĐÍCH</div>
+        </div>
+        <div class="lane">
+            <span class="lane-label">🔴 Đội 3</span>
+            <div class="duck" id="duck-3">🦆</div>
+            <div class="finish-line">🏁 ĐÍCH</div>
+        </div>
+        <div class="lane">
+            <span class="lane-label">🟢 Đội 4</span>
+            <div class="duck" id="duck-4">🦆</div>
+            <div class="finish-line">🏁 ĐÍCH</div>
+        </div>
+    </div>
+
+    <!-- ĐIỀU KHIỂN VỊT BƠI & THẺ PHÉP -->
+    <div class="team-controls">
+        <div class="team-card">
+            <b>🟡 Vịt Vàng</b><br>
+            <button class="btn-swim" onclick="moveDuck(1, 15)">Bơi +15m 🌊</button><br>
+            <button class="btn-spell" onclick="useSpell(1)">⚡ Thẻ x2 Bơi</button>
+        </div>
+        <div class="team-card">
+            <b>🔵 Vịt Xanh</b><br>
+            <button class="btn-swim" onclick="moveDuck(2, 15)">Bơi +15m 🌊</button><br>
+            <button class="btn-spell" onclick="useSpell(2)">⚡ Thẻ x2 Bơi</button>
+        </div>
+        <div class="team-card">
+            <b>🔴 Vịt Đỏ</b><br>
+            <button class="btn-swim" onclick="moveDuck(3, 15)">Bơi +15m 🌊</button><br>
+            <button class="btn-spell" onclick="useSpell(3)">⚡ Thẻ x2 Bơi</button>
+        </div>
+        <div class="team-card">
+            <b>🟢 Vịt Lá</b><br>
+            <button class="btn-swim" onclick="moveDuck(4, 15)">Bơi +15m 🌊</button><br>
+            <button class="btn-spell" onclick="useSpell(4)">⚡ Thẻ x2 Bơi</button>
+        </div>
+    </div>
+
+    <!-- KHUNG CÂU HỎI & NHẬP ĐÁP ÁN -->
+    <div class="quiz-box">
+        <div class="sentence" id="q-sentence">Đang tải câu hỏi...</div>
+        <div class="ai-box" id="q-ai">Đang tải phân tích AI...</div>
+
+        <div class="input-box">
+            <label>✍️ <b>Đáp án của Thám Tử (Gõ ý kiến của đội vào đây):</b></label>
+            <textarea id="user-input" placeholder="Nhập điểm AI làm sai hoặc câu sửa của đội em tại đây..."></textarea>
+        </div>
+
+        <div class="solution-box" id="sol-box">
+            <b>💡 ĐÁP ÁN PHÁN QUYẾT:</b>
+            <div id="q-sol">...</div>
+        </div>
+
+        <div class="nav-btns">
+            <button class="btn-main" onclick="prevQ()">⬅️ Câu trước</button>
+            <button class="btn-main" style="background:#e74c3c" onclick="toggleSol()">🔍 Mở Đáp Án / Soi AI</button>
+            <button class="btn-main" onclick="nextQ()">Câu tiếp ➡️</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const questions = [
+        {
+            sentence: "Bài 1b: Sử dụng điện gió vừa bảo vệ môi trường, vừa không tốn nhiên liệu như nhà máy nhiệt điện.",
+            ai: "<b>AI nhận xét:</b> Câu này đúng cấu trúc cú pháp, nội dung rõ ràng và không mắc lỗi logic nào.",
+            sol: "<b>❌ AI Sai:</b> Không phát hiện ra lỗi mâu thuẫn thực tế! Nhiệt điện rất tốn nhiên liệu, không thể dùng 'như' để so sánh với điện gió.<br><b>✍️ Sửa:</b> <i>'...không tốn nhiên liệu, <u>trái ngược với</u> nhà máy nhiệt điện.'</i>"
+        },
+        {
+            sentence: "Bài 3a: Các cảnh sát truy tìm tên tội phạm không để lại dấu vết.",
+            ai: "<b>AI giải thích:</b> Câu này nghĩa là cảnh sát đang truy đuổi tên tội phạm nguy hiểm, không để lại dấu vết ở hiện trường.",
+            sol: "<b>❌ AI Sai:</b> Bị nhìn phiến diện, bỏ sót nghĩa thứ 2 do trật tự từ mơ hồ!<br><b>✍️ 2 Nghĩa:</b> 1. Tội phạm không để lại dấu vết | 2. Cảnh sát truy tìm không để lại dấu vết.<br><b>Sửa:</b> <i>'Các cảnh sát truy tìm tên tội phạm – kẻ vốn không để lại dấu vết.'</i>"
+        },
+        {
+            sentence: "Bài 3b: Trong vườn hoa cúc nở rộ rực một màu vàng.",
+            ai: "<b>AI sửa:</b> 'Trong vườn, hoa cúc nở rộ rực một màu vàng.'",
+            sol: "<b>❌ AI Sai:</b> Chỉ thêm dấu phẩy ngắt ngữ pháp chứ chưa giải thích tính mơ hồ của cụm 'Trong vườn hoa cúc'.<br><b>✍️ Sửa:</b> Ngắt lại trật tự hoặc thêm từ chỉ định để rõ nghĩa."
+        },
+        {
+            sentence: "Bài 4b: Giọt nước mắt vầng trăng / Long lanh trong đáy giếng (Thanh Thảo)",
+            ai: "<b>AI bắt lỗi:</b> Câu thơ bị lỗi mơ hồ vì không rõ trăng hay nước mắt rớt xuống giếng, cần sửa cho rõ nghĩa.",
+            sol: "<b>❌ AI Sai:</b> Máy móc! Trong thơ văn nghệ thuật, sự đa nghĩa/mơ hồ là ẩn dụ nghệ thuật sáng tạo, KHÔNG PHẢI LỖI SAI.<br><b>🏆 Kết luận:</b> Giữ nguyên câu thơ!"
+        }
+    ];
+
+    let currentIdx = 0;
+    let duckPositions = [10, 10, 10, 10]; // Vị trí xuất phát %
+
+    function loadQ(idx) {
+        document.getElementById('q-sentence').innerHTML = questions[idx].sentence;
+        document.getElementById('q-ai').innerHTML = questions[idx].ai;
+        document.getElementById('q-sol').innerHTML = questions[idx].sol;
+        document.getElementById('user-input').value = '';
+        document.getElementById('sol-box').style.display = 'none';
+    }
+
+    function moveDuck(team, step) {
+        duckPositions[team - 1] += step;
+        if (duckPositions[team - 1] > 82) duckPositions[team - 1] = 82; // Giới hạn vạch đích
+        document.getElementById(`duck-${team}`).style.left = duckPositions[team - 1] + '%';
+        
+        if(duckPositions[team - 1] >= 82) {
+            alert(`🎉 CHÚC MỪNG VỊT ĐỘI ${team} ĐÃ VỀ ĐÍCH VÔ ĐỊCH! 🏆`);
+        }
+    }
+
+    function useSpell(team) {
+        alert(`⚡ Đội ${team} đã kích hoạt Phép x2 Bơi Nhanh! Nếu trả lời đúng lượt này, Vịt sẽ bơi vọt +30m!`);
+    }
+
+    function toggleSol() {
+        const box = document.getElementById('sol-box');
+        box.style.display = box.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function nextQ() {
+        if (currentIdx < questions.length - 1) { currentIdx++; loadQ(currentIdx); }
+    }
+
+    function prevQ() {
+        if (currentIdx > 0) { currentIdx--; loadQ(currentIdx); }
+    }
+
+    loadQ(currentIdx);
+</script>
+
+</body>
+</html>
